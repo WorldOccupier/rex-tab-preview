@@ -4,6 +4,10 @@ Press `Cmd+P`, then a window number (1–9), to preview that window's screen in
 a small read-only floating layer next to the tab list. Press Enter to switch
 to that window, or Escape to close it. Nothing beyond Rex and macOS is needed.
 
+[![Previewing two tabs, then switching to the second](demo.gif)](demo.mp4)
+
+Click the GIF for the video with sound.
+
 ## Install
 
 Clone the repo anywhere; this uses `~/.config/rex/rex-tab-preview`:
