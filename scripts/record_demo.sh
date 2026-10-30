@@ -1,5 +1,5 @@
 #!/bin/sh
-# Records demo.mp4 and demo.gif: adds three tabs to session NAME, previews the
+# Records demo.mp4 and demo-tabs.gif: adds three tabs to session NAME, previews the
 # second, then the third, and switches to it. render_demo.sh layers the
 # keys pressed and a click per key over the recording. Open NAME in its own Rex
 # window first, so no other session shows. Needs Rex.app with Remote Control on

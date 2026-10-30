@@ -1,5 +1,5 @@
 #!/bin/sh
-# Renders demo.mp4 and demo.gif from what record_demo.sh captured in
+# Renders demo.mp4 and demo-tabs.gif from what record_demo.sh captured in
 # demo/capture: the recording in a rounded window on a dark backdrop, the keys
 # pressed as key caps (drawn by demo_overlay.swift) and a click per key.
 # Needs ffmpeg and swift.
@@ -43,5 +43,5 @@ anullsrc=r=48000:cl=stereo:d=14[quiet];${CLICKS}[quiet]${MIX}amix=inputs=$((N + 
 # The GIF keeps the window at full size, cropped to it with a little backdrop
 # around it, so the terminal text stays readable.
 ffmpeg -loglevel error -y -i "$DIR/demo.mp4" -vf "crop=$((WIN_W + 80)):1080:$((WIN_X - 40)):0,fps=15,\
-split[a][b];[a]palettegen=max_colors=256:stats_mode=diff[p];[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle" "$DIR/demo.gif"
-echo "wrote $DIR/demo.mp4 ($(du -h "$DIR/demo.mp4" | cut -f1)) and $DIR/demo.gif ($(du -h "$DIR/demo.gif" | cut -f1))"
+split[a][b];[a]palettegen=max_colors=256:stats_mode=diff[p];[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle" "$DIR/demo-tabs.gif"
+echo "wrote $DIR/demo.mp4 ($(du -h "$DIR/demo.mp4" | cut -f1)) and $DIR/demo-tabs.gif ($(du -h "$DIR/demo-tabs.gif" | cut -f1))"
