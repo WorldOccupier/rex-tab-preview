@@ -5,6 +5,10 @@ Preview another window's screen without leaving the one you're in. Press
 appears next to the tab list. Press Enter to switch to it, or Escape to close
 it. It needs only Rex and macOS.
 
+[![Previewing two tabs, then switching to the second](demo-tabs.gif)](demo.mp4)
+
+Click the GIF for the video with sound.
+
 ## Shortcuts
 
 | Keys | What it does |
