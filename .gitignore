@@ -1,0 +1,5 @@
+.DS_Store
+demo/target/
+demo/capture/
+demo/frames/
+demo/strip.png
