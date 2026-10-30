@@ -1,22 +1,33 @@
 # rex-tab-preview
 
-Press `Cmd+P`, then a window number (1–9), to preview that window's screen in
-a small read-only floating layer next to the tab list. Press Enter to switch
-to that window, or Escape to close it. Nothing beyond Rex and macOS is needed.
+Preview another window's screen without leaving the one you're in. Press
+`Cmd+P`, then a window number, and a small read-only copy of that window
+appears next to the tab list. Press Enter to switch to it, or Escape to close
+it. It needs only Rex and macOS.
 
-[![Previewing two tabs, then switching to the second](demo-tabs.gif)](demo.mp4)
+## Shortcuts
 
-Click the GIF for the video with sound.
+| Keys | What it does |
+| --- | --- |
+| `Cmd+P`, then `1`–`9` | Preview window 1–9. Holding Cmd while pressing the digit also works. |
+| `Enter` (preview open) | Switch to the previewed window, with a short pop sound. |
+| `Escape` (preview open) | Close the preview and stay where you are. |
+
+Enter and Escape only act on the preview while one is open. Otherwise they go
+to the pane as normal. The preview refreshes every half second.
+
+To use a different prefix than `Cmd+P`, pass it to `setup`, for example
+`setup("cmd+shift+p")`.
 
 ## Install
 
-Clone the repo anywhere; this uses `~/.config/rex/rex-tab-preview`:
+Clone the repo anywhere. This example uses `~/.config/rex/rex-tab-preview`:
 
 ```sh
 git clone https://github.com/WorldOccupier/rex-tab-preview ~/.config/rex/rex-tab-preview
 ```
 
-Then add to `~/.config/rex/init.lua`:
+Add this to `~/.config/rex/init.lua`:
 
 ```lua
 package.path = os.getenv("HOME") .. "/.config/rex/rex-tab-preview/?.lua;" .. package.path
@@ -25,32 +36,15 @@ require("preview").setup()        -- or setup("cmd+shift+p")
 
 Then run `rex config reload`.
 
-Rex has no tab-hover event and no layer styling API, so the preview is
-key-triggered, its border is drawn with box characters, and its size is held
-fixed by snapping it back if it's moved or resized. Closing a preview runs
-the "Tab Preview Closed (internal)" action, which shows up in the command
-palette; it does nothing when run by hand.
+## How it works
 
-## Files
+Rex has no tab-hover event and no layer styling API, so:
 
-- `preview.lua`: keys, actions, and the preview's layer.
-- `render.lua`: runs in the layer and draws the previewed window.
-- `frame.lua`: the border, and fitting lines to the preview's width.
-- `screen.lua`: captures the window and holds the layer in place.
-- `terminal.lua`: calls to a terminal block's methods.
-- `tabs.lua`: tab names, and the ◉ marker on the previewed tab.
-- `sound.lua`: the pop played on Enter.
+- the preview opens from a key press, not on hover;
+- its border is drawn with box characters;
+- its size is held fixed by snapping it back if it's moved or resized.
 
-## Tests
+The previewed tab is marked with ◉ in the tab list.
 
-```sh
-rex do scripts/test_frame.lua
-scripts/verify_events.sh
-scripts/verify_missing_window.sh
-```
-
-The scripts use throwaway sessions and need the Rex server running.
-
-## License
-
-MIT. See `LICENSE`.
+Closing a preview runs the "Tab Preview Closed (internal)" action, which
+shows up in the command palette. It does nothing when run by hand.
