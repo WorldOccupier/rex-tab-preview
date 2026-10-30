@@ -10,12 +10,10 @@ CAP=$DIR/demo/capture
 OUT=$CAP/overlay
 rm -rf "$OUT" && mkdir -p "$OUT"
 
-# Shows only the terminal: the sidebar (SIDEBAR px of the recording) is cut
-# off, and the rest drawn WIN_H px tall, as wide as its aspect allows.
-SIDEBAR=228
+# The window is drawn WIN_H px tall, as wide as the recording's aspect allows.
 WIN_H=1040
 SIZE=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$CAP/recording.mov")
-WIN_W=$(echo "$SIZE" | awk -F, -v s=$SIDEBAR -v h=$WIN_H '{ w = int(h * ($1 - s) / $2); print w - w % 2 }')
+WIN_W=$(echo "$SIZE" | awk -F, -v h=$WIN_H '{ w = int(h * $1 / $2); print w - w % 2 }')
 WIN_X=$(( (1920 - WIN_W) / 2 ))
 WIN_Y=$(( (1080 - WIN_H) / 2 ))
 swift "$DIR/scripts/demo_overlay.swift" "$CAP/keys.txt" "$OUT" "$WIN_W" "$WIN_H" > "$OUT/presses.txt"
@@ -37,7 +35,7 @@ ffmpeg -loglevel error -y \
   -loop 1 -framerate 30 -i "$OUT/mask.png" \
   -framerate 30 -i "$OUT/caps/%04d.png" \
   -i "$CAP/click.wav" \
-  -filter_complex "[1]fps=30,crop=iw-$SIDEBAR:ih:$SIDEBAR:0,scale=$WIN_W:$WIN_H:flags=lanczos,format=rgba[rec];[2]format=gray[mask];[rec][mask]alphamerge[win];\
+  -filter_complex "[1]fps=30,scale=$WIN_W:$WIN_H:flags=lanczos,format=rgba[rec];[2]format=gray[mask];[rec][mask]alphamerge[win];\
 [0][win]overlay=$WIN_X:$WIN_Y:shortest=1[base];[base][3]overlay=0:0,format=yuv420p[v];\
 anullsrc=r=48000:cl=stereo:d=14[quiet];${CLICKS}[quiet]${MIX}amix=inputs=$((N + 1)):normalize=0[a]" \
   -map "[v]" -map "[a]" -t 14 -c:v libx264 -crf 18 -preset medium -tune animation -c:a aac -b:a 160k \

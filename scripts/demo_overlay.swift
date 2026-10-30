@@ -52,7 +52,7 @@ func rounded(_ r: CGRect, _ radius: CGFloat) -> CGPath {
 }
 
 png(out.appendingPathComponent("bg.png")) { ctx in
-    let gradient = CGGradient(colorsSpace: nil, colors: [color(0x1d2033), color(0x07080c)] as CFArray, locations: [0, 1])!
+    let gradient = CGGradient(colorsSpace: nil, colors: [color(0x4a4d55), color(0x26282d)] as CFArray, locations: [0, 1])!
     let center = CGPoint(x: CGFloat(W) / 2, y: CGFloat(H) * 0.35)
     ctx.drawRadialGradient(gradient, startCenter: center, startRadius: 0, endCenter: center, endRadius: CGFloat(W) * 0.85, options: .drawsAfterEndLocation)
     ctx.setShadow(offset: CGSize(width: 0, height: 18), blur: 56, color: color(0x000000, 0.75))
