@@ -42,5 +42,8 @@ ffmpeg -loglevel error -y \
 anullsrc=r=48000:cl=stereo:d=14[quiet];${CLICKS}[quiet]${MIX}amix=inputs=$((N + 1)):normalize=0[a]" \
   -map "[v]" -map "[a]" -t 14 -c:v libx264 -crf 18 -preset medium -tune animation -c:a aac -b:a 160k \
   -movflags +faststart "$DIR/demo.mp4"
-ffmpeg -loglevel error -y -i "$DIR/demo.mp4" -vf "fps=12,scale=900:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer" "$DIR/demo.gif"
+# The GIF keeps the window at full size, cropped to it with a little backdrop
+# around it, so the terminal text stays readable.
+ffmpeg -loglevel error -y -i "$DIR/demo.mp4" -vf "crop=$((WIN_W + 80)):1080:$((WIN_X - 40)):0,fps=15,\
+split[a][b];[a]palettegen=max_colors=256:stats_mode=diff[p];[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle" "$DIR/demo.gif"
 echo "wrote $DIR/demo.mp4 ($(du -h "$DIR/demo.mp4" | cut -f1)) and $DIR/demo.gif ($(du -h "$DIR/demo.gif" | cut -f1))"
